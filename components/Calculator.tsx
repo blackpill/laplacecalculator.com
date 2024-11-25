@@ -1,14 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { MathInput } from './MathInput'
 import { MathToolbar } from './MathToolbar'
 import dynamic from 'next/dynamic'
+import nerdamer from 'nerdamer'
+import 'nerdamer/all'
 
 export default function Calculator() {
+  useEffect(() => {
+    import("react-mathquill").then((mq) => {
+      mq.addStyles();
+    });
+  }, [])
   const [input, setInput] = useState('')
-  const [result, setResult] = useState('')
+  const [result, setResult] = useState<nerdamer.Expression>(nerdamer(''))
 
   const handleSymbolClick = (latex: string) => {
     setInput(prev => prev + latex)
@@ -20,8 +27,15 @@ export default function Calculator() {
   );
 
   const handleCalculate = () => {
-    // Here you would implement the actual Laplace transform calculation
-    setResult(`\\mathcal{L}\\{${input}\\} = \\text{Result of the Laplace transform}`)
+    try {
+      console.log("handleCalculate: input = ", input)
+      const result = nerdamer(`laplace(${input}, x, s)`).evaluate()
+      // const result = nerdamer.convertFromLaTeX(input).text()
+      console.log("handleCalculate: result = ", result.toTeX())
+      setResult(result)
+    } catch (error) {
+      console.error('Error: Invalid expression')
+    }
   }
 
   const examples = [
@@ -47,7 +61,7 @@ export default function Calculator() {
 
       {result && (
         <div className="mt-4 p-4 bg-muted rounded-md">
-          <StaticMathField>{result}</StaticMathField>
+          <StaticMathField>{result.toTeX()}</StaticMathField>
         </div>
       )}
 
