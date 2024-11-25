@@ -34,7 +34,7 @@ export default function Calculator() {
       console.log("handleCalculate: result = ", result.toTeX())
       setResult(result)
     } catch (error) {
-      console.error('Error: Invalid expression')
+      console.error('Error: Invalid expression', error)
     }
   }
 
