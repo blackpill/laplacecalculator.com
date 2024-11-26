@@ -3,16 +3,23 @@
 import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { MathInput } from './MathInput'
+import { cn } from '@/lib/utils'
 import { MathToolbar } from './MathToolbar'
 import dynamic from 'next/dynamic'
 import nerdamer from 'nerdamer'
 import 'nerdamer/all'
+import Katex from '@/components/Katex';
+
 
 export default function Calculator() {
+  const [mounted, setMounted] = useState(false)
   useEffect(() => {
     import("react-mathquill").then((mq) => {
       mq.addStyles();
     });
+  }, [])
+  useEffect(() => {
+    setMounted(true)
   }, [])
   const [input, setInput] = useState('')
   const [result, setResult] = useState<nerdamer.Expression>(nerdamer(''))
@@ -26,11 +33,30 @@ export default function Calculator() {
     { ssr: false }
   );
 
+  const convertLatexForNerdamer = (latex: string): string => {
+    // Handle trigonometric functions with exponents
+    const trigFunctions = ['sin', 'cos', 'tan', 'csc', 'sec', 'cot']
+    let converted = latex
+
+    trigFunctions.forEach(func => {
+      // Match pattern like \sin^{2}(t) or \sin^2(t)
+      const regex = new RegExp(`\\\\${func}\\^(\\{[^}]+\\}|\\d+)\\(([^)]+)\\)`, 'g')
+      converted = converted.replace(regex, (_, exponent, argument) => {
+        // Remove curly braces if present
+        const cleanExponent = exponent.replace(/[{}]/g, '')
+        return `\\${func}(${argument})^${cleanExponent}`
+      })
+    })
+
+    return converted
+  }
+
   const handleCalculate = () => {
     try {
       console.log("handleCalculate: input = ", input)
-      const result = nerdamer(`laplace(${input}, x, s)`).evaluate()
-      // const result = nerdamer.convertFromLaTeX(input).text()
+      const convertedInput = convertLatexForNerdamer(input)
+      console.log("handleCalculate: converted input = ", convertedInput)
+      const result = nerdamer.convertFromLaTeX(`laplace(${convertedInput}, t, s)`).expand()
       console.log("handleCalculate: result = ", result.toTeX())
       setResult(result)
     } catch (error) {
@@ -39,10 +65,18 @@ export default function Calculator() {
   }
 
   const examples = [
-    { latex: "e^t", display: "\\mathcal{L}\\{e^t\\}" },
-    { latex: "e^{-2t}\\sin^2(t)", display: "\\mathcal{L}\\{e^{-2t}\\sin^2(t)\\}" },
-    { latex: "8\\pi", display: "\\mathcal{L}\\{8\\pi\\}" },
+    { latex: "e^{t/2}", display: "\\mathcal{L}\\{e^{t/2}\\}" },
+    { latex: "e^{-2t}\sin^2(t)", display: "\\mathcal{L}\\{e^{-2t}\\sin^2(t)\\}" },
+    { latex: "8\\pi", display: "\\mathcal\{L\}\\{8\\pi\\}" },
   ]
+  if (!mounted) {
+    return (
+      <div className={cn(
+        "h-[50px] border rounded-md bg-background", ""
+      )} />
+    )
+  }
+  console.log("result.toTeX() = ", result.toTeX())
 
   return (
     <div className="space-y-6">
@@ -74,7 +108,7 @@ export default function Calculator() {
               className="p-3 border rounded-lg hover:bg-muted cursor-pointer"
               onClick={() => setInput(example.latex)}
             >
-              <StaticMathField>{example.display}</StaticMathField>
+              <Katex math={example.display}/>
             </div>
           ))}
         </div>
