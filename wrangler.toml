@@ -1,0 +1,13 @@
+
+name = "laplacecalculator-com"
+compatibility_date = "2024-07-29"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# [[r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "strandshint-top-json"
+# 
+# [[kv_namespaces]]
+# binding = "STRANDSKV"
+# id = "08123e85d58743cbb8e55837696021dd"
