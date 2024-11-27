@@ -14,14 +14,14 @@ interface MathToolbarProps {
 
 export function MathToolbar({ onSymbolClick }: MathToolbarProps) {
   const symbols = [
-    { latex: "x^2", label: "x²" },
-    { latex: "x^{□}", label: "x□" },
-    { latex: "\\log_{□}", label: "log□" },
-    { latex: "\\frac{□}{□}", label: "□/□" },
-    { latex: "\\leq", label: "≤" },
-    { latex: "\\geq", label: "≥" },
-    { latex: "\\int", label: "∫" },
-    { latex: "\\int_{□}", label: "∫□" },
+    { latex: "^2", label: "t^2" },
+    { latex: "^{}", label: "t^□" },
+    { latex: "\\sqrt{}", label: "\\sqrt{□}" },
+    { latex: "\\frac{}{}", label: "\\frac{□}{□}" },
+    { latex: "\\sin{()}", label: "\\sin{()}" },
+    { latex: "\\cos{()}", label: "\\cos{()}" },
+    { latex: "\\sinh{()}", label: "\\sinh{()}" },
+    { latex: "\\int_{}", label: "∫□" },
     { latex: "\\lim", label: "lim" },
     { latex: "\\sum", label: "∑" },
     { latex: "\\infty", label: "∞" },
@@ -29,15 +29,6 @@ export function MathToolbar({ onSymbolClick }: MathToolbarProps) {
     { latex: "\\circ", label: "∘" },
     { latex: "\\pi", label: "π" },
   ]
-
-  const categories = [
-    "implicit derivative",
-    "tangent",
-    "volume",
-    "laplace",
-    "fourier"
-  ]
-
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-7 gap-2">
@@ -49,27 +40,6 @@ export function MathToolbar({ onSymbolClick }: MathToolbarProps) {
             onClick={onSymbolClick}
           />
         ))}
-      </div>
-      <div className="flex gap-2">
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant="outline"
-            className="text-sm"
-            onClick={() => onSymbolClick(category)}
-          >
-            {category}
-          </Button>
-        ))}
-        <Select>
-          <SelectTrigger className="w-24">
-            <SelectValue placeholder="See All" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="more">More symbols</SelectItem>
-            <SelectItem value="advanced">Advanced</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
     </div>
   )

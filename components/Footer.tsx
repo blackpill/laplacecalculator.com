@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="bg-muted text-muted-foreground mt-8">
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center">
-          <p className="text-foreground">&copy; 2023 Laplace Calculator. All rights reserved.</p>
+          <p className="text-foreground">&copy; 2024 Laplace Calculator. All rights reserved.</p>
           <nav>
             <ul className="flex space-x-4">
               <li><Link href="/privacy" className="text-foreground hover:text-primary">Privacy Policy</Link></li>

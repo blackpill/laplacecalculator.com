@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import Katex from '@/components/Katex';
+
 
 interface MathSymbolButtonProps {
   latex: string
-  label?: string
+  label: string
   onClick: (latex: string) => void
   className?: string
 }
@@ -18,7 +20,7 @@ export function MathSymbolButton({ latex, label, onClick, className }: MathSymbo
       )}
       onClick={() => onClick(latex)}
     >
-      {label || latex}
+      <Katex math={label}/>
     </Button>
   )
 }

@@ -1,4 +1,4 @@
-import Calculator from '../components/Calculator'
+import Calculator from '@/components/Calculator'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Katex from '@/components/Katex';
 

@@ -9,9 +9,13 @@ import dynamic from 'next/dynamic'
 import nerdamer from 'nerdamer'
 import 'nerdamer/all'
 import Katex from '@/components/Katex';
+import { useRouter } from 'next/navigation'
 
+interface CalculatorProps {
+  expr?: string;
+}
 
-export default function Calculator() {
+export default function Calculator({ expr = "" }: CalculatorProps) {
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
     import("react-mathquill").then((mq) => {
@@ -21,8 +25,16 @@ export default function Calculator() {
   useEffect(() => {
     setMounted(true)
   }, [])
-  const [input, setInput] = useState('')
+
+  const [input, setInput] = useState(expr)
   const [result, setResult] = useState<nerdamer.Expression>(nerdamer(''))
+
+  useEffect(() => {
+    if (expr) {
+      setInput(expr)
+      handleCalculate()
+    }
+  }, [expr])
 
   const handleSymbolClick = (latex: string) => {
     setInput(prev => prev + latex)
@@ -62,6 +74,13 @@ export default function Calculator() {
     } catch (error) {
       console.error('Error: Invalid expression', error)
     }
+  }
+
+  const router = useRouter()
+
+  const handleExampleClick = (latex: string) => {
+    const encodedExpr = encodeURIComponent(latex)
+    router.push(`/calculate/${encodedExpr}`)
   }
 
   const examples = [
@@ -106,15 +125,15 @@ export default function Calculator() {
             <div
               key={example.latex}
               className="p-3 border rounded-lg hover:bg-muted cursor-pointer"
-              onClick={() => setInput(example.latex)}
+              onClick={() => handleExampleClick(example.latex)}
             >
               <Katex math={example.display}/>
             </div>
           ))}
         </div>
-        <Button variant="link" className="text-primary">
+        {/* <Button variant="link" className="text-primary">
           Show More
-        </Button>
+        </Button> */}
       </div>
     </div>
   )
