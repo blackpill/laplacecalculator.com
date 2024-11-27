@@ -13,9 +13,10 @@ import { useRouter } from 'next/navigation'
 
 interface CalculatorProps {
   expr?: string;
+  inverse?: boolean;
 }
 
-export default function Calculator({ expr = "" }: CalculatorProps) {
+export default function Calculator({ expr = "", inverse = false }: CalculatorProps) {
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
     import("react-mathquill").then((mq) => {
@@ -68,7 +69,9 @@ export default function Calculator({ expr = "" }: CalculatorProps) {
       console.log("handleCalculate: input = ", input)
       const convertedInput = convertLatexForNerdamer(input)
       console.log("handleCalculate: converted input = ", convertedInput)
-      const result = nerdamer.convertFromLaTeX(`laplace(${convertedInput}, t, s)`).expand()
+      const result = inverse 
+        ? nerdamer.convertFromLaTeX(`ilt(${convertedInput}, s, t)`).expand()
+        : nerdamer.convertFromLaTeX(`laplace(${convertedInput}, t, s)`).expand()
       console.log("handleCalculate: result = ", result.toTeX())
       setResult(result)
     } catch (error) {
@@ -80,13 +83,27 @@ export default function Calculator({ expr = "" }: CalculatorProps) {
 
   const handleExampleClick = (latex: string) => {
     const encodedExpr = encodeURIComponent(latex)
-    router.push(`/calculate/${encodedExpr}`)
+    router.push(`${inverse ? '/inverse-laplace' : '/laplace'}/${encodedExpr}`)
+  }
+
+  const handleInverseTransform = () => {
+    const encodedExpr = encodeURIComponent(input)
+    router.push(`/inverse-laplace/${encodedExpr}`)
   }
 
   const examples = [
-    { latex: "e^{t/2}", display: "\\mathcal{L}\\{e^{t/2}\\}" },
-    { latex: "e^{-2t}\sin^2(t)", display: "\\mathcal{L}\\{e^{-2t}\\sin^2(t)\\}" },
-    { latex: "8\\pi", display: "\\mathcal\{L\}\\{8\\pi\\}" },
+    { 
+      latex: inverse ? "\\frac{1}{s^2 + 1}" : "e^{t/2}", 
+      display: inverse ? "\\mathcal{L}^{-1}\\{\\frac{1}{s^2 + 1}\\}" : "\\mathcal{L}\\{e^{t/2}\\}" 
+    },
+    { 
+      latex: inverse ? "\\frac{s}{s^2 + 4}" : "e^{-2t}\\sin^2(t)", 
+      display: inverse ? "\\mathcal{L}^{-1}\\{\\frac{s}{s^2 + 4}\\}" : "\\mathcal{L}\\{e^{-2t}\\sin^2(t)\\}" 
+    },
+    { 
+      latex: inverse ? "\\frac{1}{s(s+1)}" : "8\\pi", 
+      display: inverse ? "\\mathcal{L}^{-1}\\{\\frac{1}{s(s+1)}\\}" : "\\mathcal{L}\\{8\\pi\\}" 
+    },
   ]
   if (!mounted) {
     return (
@@ -107,9 +124,16 @@ export default function Calculator({ expr = "" }: CalculatorProps) {
           onChange={setInput}
           className="text-lg"
         />
-        <Button onClick={handleCalculate} className="w-full">
-          Calculate
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={handleCalculate} className="flex-1">
+            {inverse ? 'Inverse Transform' : 'Laplace Transform'}
+          </Button>
+          {!inverse && (
+            <Button onClick={handleInverseTransform} variant="outline" className="flex-1">
+              Inverse Transform
+            </Button>
+          )}
+        </div>
       </div>
 
       {result && (
@@ -119,7 +143,7 @@ export default function Calculator({ expr = "" }: CalculatorProps) {
       )}
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Laplace Transform - Examples</h3>
+        <h3 className="text-lg font-semibold">{inverse ? 'Inverse Laplace Transform' : 'Laplace Transform'} - Examples</h3>
         <div className="space-y-2">
           {examples.map((example) => (
             <div

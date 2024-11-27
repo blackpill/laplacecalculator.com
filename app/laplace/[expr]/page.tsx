@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Params; }): Promise
     title: 'Laplace Transform Calculator - Free',
     description: 'Fast and accurate Laplace transform & inverse Laplace transform calculations for engineering and mathematics',
     alternates: {
-      canonical: `${BASE_URL}/calculate/${expr}`,
+      canonical: `${BASE_URL}/laplace/${expr}`,
     },
   };
 }
