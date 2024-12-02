@@ -80,10 +80,146 @@ export default function Home() {
 
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4 text-primary">Laplace Transform Table</h2>
-        <p className="text-lg text-foreground">
+        <div className="overflow-x-auto mx-4 md:mx-8">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-muted">
+                <th className="border py-2 px-3 text-center">Time Domain <Katex math="f(t)" inline={true} /></th>
+                <th className="border py-2 px-3 text-center">Laplace Domain <Katex math="F(s)=\mathcal{L}\{f(t)\}" inline={true} /></th>
+                <th className="border py-2 px-3 text-center">Region of Convergence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="1" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{s}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="t" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{s^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="t^n" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{n!}{s^{n+1}}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="e^{at}" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{s-a}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > Re(a)" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\sin(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{a}{s^2 + a^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\cos(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{s}{s^2 + a^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="t\sin(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{2as}{(s^2 + a^2)^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="t\cos(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{s^2 - a^2}{(s^2 + a^2)^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="e^{at}\sin(bt)" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{b}{(s-a)^2 + b^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > Re(a)" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="e^{at}\cos(bt)" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{s-a}{(s-a)^2 + b^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="Re(s) > Re(a)" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Note: This table shows some of the most commonly used Laplace transform pairs. 
+          The Region of Convergence (ROC) indicates where the transform is valid in the complex s-plane.
         </p>
       </section>
+
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-4 text-primary">Inverse Laplace Transform Table</h2>
+        <div className="overflow-x-auto mx-4 md:mx-8">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-muted">
+                <th className="border py-2 px-3 text-center">Laplace Domain <Katex math="F(s)" inline={true} /></th>
+                <th className="border py-2 px-3 text-center">Time Domain <Katex math="f(t)=\mathcal{L}^{-1}\{F(s)\}" inline={true} /></th>
+                <th className="border py-2 px-3 text-center">Conditions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{s}" /></td>
+                <td className="border py-2 px-3"><Katex math="1" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{s^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="t" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{s^{n+1}}" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{t^n}{n!}" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{s-a}" /></td>
+                <td className="border py-2 px-3"><Katex math="e^{at}" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{a}{s^2 + a^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="\sin(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{s}{s^2 + a^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="\cos(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{(s-a)^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="te^{at}" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{s^2 + a^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{a}\sin(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{s^2}{(s^2 + a^2)^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{1}{2}t\sin(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+              <tr>
+                <td className="border py-2 px-3"><Katex math="\frac{s}{(s^2 + a^2)^2}" /></td>
+                <td className="border py-2 px-3"><Katex math="\frac{t}{2a}\cos(at)" /></td>
+                <td className="border py-2 px-3"><Katex math="t > 0" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Note: This table shows common inverse Laplace transform pairs. 
+          The condition t &gt; 0 is required for all inverse transforms as they are only defined for positive time.
+        </p>
+      </section>
+
     </div>
   )
 }
-
