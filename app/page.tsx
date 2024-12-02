@@ -14,7 +14,7 @@ export default function Home() {
           <CardDescription className="text-muted-foreground">Enter a function to calculate its Laplace transform</CardDescription>
         </CardHeader>
         <CardContent>
-          <Calculator />
+          <Calculator both={true}/>
         </CardContent>
       </Card>
       

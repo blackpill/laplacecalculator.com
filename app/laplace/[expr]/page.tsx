@@ -1,8 +1,8 @@
 import Calculator from '@/components/Calculator'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import Katex from '@/components/Katex';
 import { Metadata } from "next";
 import { BASE_URL } from '@/app/config';
+export const runtime = 'edge';
 type Params = Promise<{ expr: string }>;
 export async function generateMetadata({ params }: { params: Params; }): Promise<Metadata> {
   const { expr } = await params;

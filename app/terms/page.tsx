@@ -16,7 +16,7 @@ export default function TermsPage() {
           <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
           <p className="text-foreground mb-4">
             Laplace Calculator is a web-based tool that provides mathematical calculations, specifically focused on Laplace transforms. 
-            The service is provided "as is" and is intended for educational and reference purposes.
+            The service is provided &quot;as is&quot; and is intended for educational and reference purposes.
           </p>
           <ul className="list-disc list-inside space-y-2 text-foreground">
             <li>All calculations are performed client-side in your browser</li>
@@ -48,7 +48,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">5. Disclaimer of Warranties</h2>
           <p className="text-foreground">
-            Laplace Calculator is provided on an "as is" and "as available" basis. We make no warranties, expressed or implied, 
+            Laplace Calculator is provided on an &quot;as is&quot; and &quot;as available&quot; basis. We make no warranties, expressed or implied, 
             regarding the accuracy, reliability, or availability of the service. Users should independently verify all results 
             for critical applications.
           </p>

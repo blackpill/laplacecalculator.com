@@ -1,12 +1,4 @@
 import { MathSymbolButton } from "./MathSymbolButton"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Button } from "./ui/button"
 
 interface MathToolbarProps {
   onSymbolClick: (latex: string) => void

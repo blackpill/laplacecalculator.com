@@ -35,7 +35,7 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-semibold mb-4">Third-Party Services</h2>
           <p className="text-foreground">
             Our website is hosted on Cloudflare Pages. While we do not collect any personal data, Cloudflare may collect some 
-            technical information as part of their service. You can learn more about Cloudflare's privacy practices at{' '}
+            technical information as part of their service. You can learn more about Cloudflare&apos;s privacy practices at{' '}
             <a href="https://www.cloudflare.com/privacy/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
               their privacy policy
             </a>.

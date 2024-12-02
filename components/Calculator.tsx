@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { MathInput } from './MathInput'
 import { cn } from '@/lib/utils'
 import { MathToolbar } from './MathToolbar'
-import dynamic from 'next/dynamic'
 import nerdamer from 'nerdamer'
 import 'nerdamer/all'
 import Katex from '@/components/Katex';
@@ -14,22 +13,35 @@ import { useRouter } from 'next/navigation'
 interface CalculatorProps {
   expr?: string;
   inverse?: boolean;
+  both?: boolean;
 }
 
-export default function Calculator({ expr = "", inverse = false }: CalculatorProps) {
+export default function Calculator({ expr = "", inverse = false, both = false }: CalculatorProps) {
   const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    import("react-mathquill").then((mq) => {
-      mq.addStyles();
-    });
-  }, [])
+
   useEffect(() => {
     setMounted(true)
   }, [])
 
   const [input, setInput] = useState(expr)
   const [result, setResult] = useState<nerdamer.Expression>(nerdamer(''))
-
+  const handleSymbolClick = (latex: string) => {
+    setInput(prev => prev + latex)
+  }
+  const handleCalculate = () => {
+    try {
+      console.log("handleCalculate: input = ", input)
+      const convertedInput = convertLatexForNerdamer(input)
+      console.log("handleCalculate: converted input = ", convertedInput)
+      const result = inverse 
+        ? nerdamer.convertFromLaTeX(`ilt(${convertedInput}, s, t)`).expand()
+        : nerdamer.convertFromLaTeX(`laplace(${convertedInput}, t, s)`).expand()
+      console.log("handleCalculate: result = ", result.toTeX())
+      setResult(result)
+    } catch (error) {
+      console.error('Error: Invalid expression', error)
+    }
+  }
   useEffect(() => {
     if (expr) {
       setInput(expr)
@@ -37,14 +49,7 @@ export default function Calculator({ expr = "", inverse = false }: CalculatorPro
     }
   }, [expr])
 
-  const handleSymbolClick = (latex: string) => {
-    setInput(prev => prev + latex)
-  }
 
-  const StaticMathField = dynamic(
-    () => import("react-mathquill").then((mod) => mod.StaticMathField),
-    { ssr: false }
-  );
 
   const convertLatexForNerdamer = (latex: string): string => {
     // Handle trigonometric functions with exponents
@@ -64,24 +69,11 @@ export default function Calculator({ expr = "", inverse = false }: CalculatorPro
     return converted
   }
 
-  const handleCalculate = () => {
-    try {
-      console.log("handleCalculate: input = ", input)
-      const convertedInput = convertLatexForNerdamer(input)
-      console.log("handleCalculate: converted input = ", convertedInput)
-      const result = inverse 
-        ? nerdamer.convertFromLaTeX(`ilt(${convertedInput}, s, t)`).expand()
-        : nerdamer.convertFromLaTeX(`laplace(${convertedInput}, t, s)`).expand()
-      console.log("handleCalculate: result = ", result.toTeX())
-      setResult(result)
-    } catch (error) {
-      console.error('Error: Invalid expression', error)
-    }
-  }
+
 
   const router = useRouter()
 
-  const handleExampleClick = (latex: string) => {
+  const handleExampleClick = (latex: string, inverse = false) => {
     const encodedExpr = encodeURIComponent(latex)
     router.push(`${inverse ? '/inverse-laplace' : '/laplace'}/${encodedExpr}`)
   }
@@ -91,20 +83,52 @@ export default function Calculator({ expr = "", inverse = false }: CalculatorPro
     router.push(`/inverse-laplace/${encodedExpr}`)
   }
 
-  const examples = [
-    { 
-      latex: inverse ? "\\frac{1}{s^2 + 1}" : "e^{t/2}", 
-      display: inverse ? "\\mathcal{L}^{-1}\\{\\frac{1}{s^2 + 1}\\}" : "\\mathcal{L}\\{e^{t/2}\\}" 
-    },
-    { 
-      latex: inverse ? "\\frac{s}{s^2 + 4}" : "e^{-2t}\\sin^2(t)", 
-      display: inverse ? "\\mathcal{L}^{-1}\\{\\frac{s}{s^2 + 4}\\}" : "\\mathcal{L}\\{e^{-2t}\\sin^2(t)\\}" 
-    },
-    { 
-      latex: inverse ? "\\frac{1}{s(s+1)}" : "8\\pi", 
-      display: inverse ? "\\mathcal{L}^{-1}\\{\\frac{1}{s(s+1)}\\}" : "\\mathcal{L}\\{8\\pi\\}" 
-    },
-  ]
+  const examples = {
+    laplace: [
+      { 
+        latex: "e^{t/2}", 
+        display: "\\mathcal{L}\\{e^{t/2}\\}" 
+      },
+      { 
+        latex: "e^{-2t}\\sin^2(t)", 
+        display: "\\mathcal{L}\\{e^{-2t}\\sin^2(t)\\}" 
+      },
+      { 
+        latex: "8\\pi", 
+        display: "\\mathcal{L}\\{8\\pi\\}" 
+      },
+      { 
+        latex: "\\sin(at)", 
+        display: "\\mathcal{L}\\{\\sin(at)\\}" 
+      },
+      { 
+        latex: "t^2", 
+        display: "\\mathcal{L}\\{t^2\\}" 
+      }
+    ],
+    inverse: [
+      { 
+        latex: "\\frac{1}{s^2 + 1}", 
+        display: "\\mathcal{L}^{-1}\\{\\frac{1}{s^2 + 1}\\}" 
+      },
+      { 
+        latex: "\\frac{s}{s^2 + 4}", 
+        display: "\\mathcal{L}^{-1}\\{\\frac{s}{s^2 + 4}\\}" 
+      },
+      { 
+        latex: "\\frac{1}{s(s+1)}", 
+        display: "\\mathcal{L}^{-1}\\{\\frac{1}{s(s+1)}\\}" 
+      },
+      { 
+        latex: "\\frac{1}{s^2}", 
+        display: "\\mathcal{L}^{-1}\\{\\frac{1}{s^2}\\}" 
+      },
+      { 
+        latex: "\\frac{s}{s^2 + a^2}", 
+        display: "\\mathcal{L}^{-1}\\{\\frac{s}{s^2 + a^2}\\}" 
+      }
+    ]
+  }
   if (!mounted) {
     return (
       <div className={cn(
@@ -125,12 +149,14 @@ export default function Calculator({ expr = "", inverse = false }: CalculatorPro
           className="text-lg"
         />
         <div className="flex gap-2">
-          <Button onClick={handleCalculate} className="flex-1">
-            {inverse ? 'Inverse Transform' : 'Laplace Transform'}
-          </Button>
-          {!inverse && (
-            <Button onClick={handleInverseTransform} variant="outline" className="flex-1">
-              Inverse Transform
+          {(!inverse || both) && (
+            <Button onClick={handleCalculate} className="flex-1">
+              Laplace Transform
+            </Button>
+          )}
+          {(inverse || both) && (
+            <Button onClick={handleInverseTransform} className="flex-1">
+              Inverse Laplace Transform
             </Button>
           )}
         </div>
@@ -138,26 +164,41 @@ export default function Calculator({ expr = "", inverse = false }: CalculatorPro
 
       {result && (
         <div className="mt-4 p-4 bg-muted rounded-md">
-          <StaticMathField>{result.toTeX()}</StaticMathField>
+          <Katex math={result.toTeX()}/>
         </div>
       )}
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">{inverse ? 'Inverse Laplace Transform' : 'Laplace Transform'} - Examples</h3>
-        <div className="space-y-2">
-          {examples.map((example) => (
-            <div
-              key={example.latex}
-              className="p-3 border rounded-lg hover:bg-muted cursor-pointer"
-              onClick={() => handleExampleClick(example.latex)}
-            >
-              <Katex math={example.display}/>
-            </div>
-          ))}
+        <h3 className="text-lg font-semibold">Examples</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Laplace Transform Examples */}
+          <div className="space-y-2">
+            <h4 className="font-medium">Laplace Transform</h4>
+            {examples.laplace.map((example) => (
+              <div
+                key={example.latex}
+                className="p-3 border rounded-lg hover:bg-muted cursor-pointer h-16 flex items-center justify-center"
+                onClick={() => handleExampleClick(example.latex)}
+              >
+                <Katex math={example.display}/>
+              </div>
+            ))}
+          </div>
+
+          {/* Inverse Laplace Transform Examples */}
+          <div className="space-y-2">
+            <h4 className="font-medium">Inverse Laplace Transform</h4>
+            {examples.inverse.map((example) => (
+              <div
+                key={example.latex}
+                className="p-3 border rounded-lg hover:bg-muted cursor-pointer h-16 flex items-center justify-center"
+                onClick={() => handleExampleClick(example.latex, true)}
+              >
+                <Katex math={example.display}/>
+              </div>
+            ))}
+          </div>
         </div>
-        {/* <Button variant="link" className="text-primary">
-          Show More
-        </Button> */}
       </div>
     </div>
   )

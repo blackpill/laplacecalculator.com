@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { LanguageSwitcher } from './LanguageSwitcher'
+// import { LanguageSwitcher } from './LanguageSwitcher'
 
 export function Header() {
   return (
@@ -12,7 +12,6 @@ export function Header() {
           <nav className="sm:ml-8">
             <ul className="flex space-x-4">
               <li><Link href="/" className="text-primary-foreground hover:text-secondary">Home</Link></li>
-              <li><Link href="/examples" className="text-primary-foreground hover:text-secondary">Examples</Link></li>
               <li><Link href="/faq" className="text-primary-foreground hover:text-secondary">FAQ</Link></li>
             </ul>
           </nav>
