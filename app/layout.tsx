@@ -4,6 +4,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { BASE_URL } from './config'
 import 'katex/dist/katex.min.css'; // 引入 KaTeX 样式
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: 'Laplace Transform Calculator - Free',
@@ -27,6 +28,7 @@ export default function RootLayout({
         </main>
         <Footer />
       </body>
+      <GoogleAnalytics gaId="G-9Q63PCSSP5" />
     </html>
   )
 }
