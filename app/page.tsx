@@ -5,9 +5,9 @@ import Katex from '@/components/Katex';
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center mb-8 text-primary">Laplace Transform Calculator</h1>
+      <h1 className="text-4xl font-bold text-center mb-8 text-primary">Laplace Calculator</h1>
       
-      <h2 className="text-2xl font-semibold mb-4 text-primary">Online Laplace Transform Calculator</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-primary">Online Laplace Calculator</h2>
       <Card className="mb-8 bg-card">
         <CardHeader>
           <CardTitle className="text-primary">Calculate Laplace Transform</CardTitle>
@@ -19,12 +19,12 @@ export default function Home() {
       </Card>
       
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-primary">What is Laplace Transform Calculator?</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-primary">What is Laplace Calculator?</h2>
         <p className="text-lg text-foreground">
           The Laplace Transform is an integral transform used to solve differential equations. 
           It transforms a function of time, f(t), to a function of complex frequency, F(s).
           The Laplace Transform is a fundamental tool for bridging the time-domain and the frequency-domain in mathematics, physics, and engineering.
-          A Laplace Transform Calculator is a tool, typically software or an online platform, that automates the process of computing the Laplace Transform or Inverse Laplace Transform of mathematical functions. These calculators are designed to handle a wide range of inputs, including standard mathematical expressions and differential equations, and provide the corresponding results in the 
+          A Laplace Calculator is a tool, typically software or an online platform, that automates the process of computing the Laplace Transform or Inverse Laplace Transform of mathematical functions. These calculators are designed to handle a wide range of inputs, including standard mathematical expressions and differential equations, and provide the corresponding results in the 
           s-domain or time-domain.
         </p>
       </section>
@@ -45,7 +45,7 @@ export default function Home() {
       </section>
       
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-primary">Why use our Laplace Transform Calculator?</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-primary">Why use our Laplace Calculator?</h2>
         <ul className="list-disc list-inside text-lg text-foreground">
           <li>Fast and accurate calculations</li>
           <li>Easy to use interface</li>

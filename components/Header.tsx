@@ -7,7 +7,7 @@ export function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:items-center">
           <Link href="/" className="text-2xl font-bold text-primary-foreground">
-            Laplace Transform Calculator
+            Laplace Calculator
           </Link>
           <nav className="sm:ml-8">
             <ul className="flex space-x-4">

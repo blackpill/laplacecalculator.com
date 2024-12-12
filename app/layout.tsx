@@ -7,7 +7,7 @@ import 'katex/dist/katex.min.css'; // 引入 KaTeX 样式
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
-  title: 'Laplace Transform Calculator - Free',
+  title: 'Laplace Calculator - Free',
   description: 'Fast and accurate Laplace transform & inverse Laplace transform calculations for engineering and mathematics',
   alternates: {
     canonical: `${BASE_URL}`,
